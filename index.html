@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Interactive Classroom - English A2 (15 Playful Objects)</title>
+    <!-- Tailwind CSS for fluid, responsive layouts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka for a rounded, playful look and Quicksand for clean readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for colorful, intuitive icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+        }
+        /* Interactive and cartoonish hover effects for objects */
+        .interactive-object {
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .interactive-object:hover {
+            filter: drop-shadow(0px 0px 15px rgba(251, 191, 36, 0.9)) saturate(1.3);
+            transform: scale(1.04) translateY(-3px);
+            transform-origin: center;
+        }
+        .interactive-object:active {
+            transform: scale(0.96);
+        }
+        /* Pulsing gold guide stars */
+        @keyframes star-pulse {
+            0% { transform: scale(0.8); opacity: 0.8; filter: drop-shadow(0 0 2px #f59e0b); }
+            50% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 10px #fbbf24); }
+            100% { transform: scale(0.8); opacity: 0.8; filter: drop-shadow(0 0 2px #f59e0b); }
+        }
+        .magic-star {
+            animation: star-pulse 2s infinite ease-in-out;
+            transform-origin: center;
+        }
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Glowing active border for selected elements */
+        .glow-active {
+            filter: drop-shadow(0px 0px 20px rgba(99, 102, 241, 1)) !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-sky-100 via-amber-50 to-emerald-100 min-h-screen flex flex-col justify-between text-slate-800 antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md border-b-4 border-yellow-300 py-3 px-6 sticky top-0 z-40 shadow-md rounded-b-3xl">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="text-center md:text-left">
+                <span class="inline-block bg-pink-100 text-pink-600 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider mb-1 animate-bounce">
+                    ✨ Play & Learn! • A2 level
+                </span>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-indigo-600 flex items-center justify-center md:justify-start gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                    My Magic Classroom!
+                </h1>
+                <p class="text-slate-500 text-xs font-medium">
+                    Click on the fun objects to learn English, or play the interactive Trivia game!
+                </p>
+            </div>
+            
+            <!-- Progress bar with sweet candy and star design -->
+            <div class="flex items-center gap-4 bg-yellow-50 p-3 rounded-2xl border-2 border-yellow-200 w-full md:w-auto justify-between md:justify-start shadow-sm">
+                <div class="text-right">
+                    <span class="text-[11px] text-amber-700 font-bold block uppercase">Your Adventure!</span>
+                    <span id="progress-text" class="text-sm font-black text-indigo-600">0 / 15 Objects</span>
+                </div>
+                <div class="w-28 bg-white border-2 border-amber-200 rounded-full h-4 overflow-hidden relative">
+                    <div id="progress-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <button id="btn-reset" class="px-3.5 py-1.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-right"></i> Reset
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-indigo-600 text-white py-2.5 px-6 shadow-md border-b-4 border-indigo-700">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs md:text-sm font-semibold">
+            <div class="flex items-center gap-2">
+                <span class="bg-indigo-500 px-2 py-0.5 rounded-lg text-yellow-300">🎯 Today's Goal:</span>
+                <span class="text-indigo-100">Explore and master the names of 15 interactive classroom items in English.</span>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <!-- Accent selector -->
+                <div class="flex items-center gap-1.5">
+                    <label for="voice-select" class="text-indigo-200 text-xs"><i class="fa-solid fa-comments"></i> Accent:</label>
+                    <select id="voice-select" class="bg-indigo-700 border-2 border-indigo-500 rounded-lg px-2 py-0.5 text-white text-xs focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                        <option value="">Loading voices...</option>
+                    </select>
+                </div>
+                
+                <!-- Toggle guide stars (Hints) -->
+                <button id="toggle-hints" class="bg-amber-400 hover:bg-amber-500 text-indigo-950 px-3 py-1 rounded-lg flex items-center gap-1.5 transition-all shadow active:scale-95 text-xs font-bold">
+                    <i id="hints-icon" class="fa-solid fa-star"></i>
+                    <span id="hints-text">Hide Stars</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 flex-grow w-full grid grid-cols-1 xl:grid-cols-4 gap-6">
+        
+        <!-- LEFT CONTROL PANEL: Word list checklist and Trivia -->
+        <section class="xl:col-span-1 bg-white p-5 rounded-3xl border-4 border-slate-100 shadow-xl flex flex-col justify-between">
+            <div>
+                <!-- TAB NAVIGATION SYSTEM -->
+                <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-4 gap-1.5">
+                    <button id="tab-study" class="flex-1 py-2 font-bold text-xs rounded-xl bg-white text-indigo-600 shadow-md transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-compass text-amber-500"></i> Explore
+                    </button>
+                    <button id="tab-quiz" class="flex-1 py-2 font-bold text-xs rounded-xl text-slate-400 hover:text-slate-600 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-gamepad text-pink-500"></i> Play Trivia
+                    </button>
+                </div>
+
+                <!-- TAB CONTENT 1: EXPLORE / WORD CHECKLIST -->
+                <div id="content-study" class="space-y-3">
+                    <h2 class="font-bold text-lg text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-rocket text-indigo-500"></i>
+                        Word Collection
+                    </h2>
+                    <p class="text-[11px] text-slate-500 leading-snug">
+                        Click on the objects in the classroom drawing or select them from the checklist below to learn them all!
+                    </p>
+                    
+                    <!-- Color checklist list -->
+                    <ul class="space-y-2 max-h-[360px] overflow-y-auto pr-1" id="vocabulary-checklist">
+                        <!-- Dynamic content loaded via JS -->
+                    </ul>
+                </div>
+
+                <!-- TAB CONTENT 2: TRIVIA GAME -->
+                <div id="content-quiz" class="hidden space-y-4">
+                    <h2 class="font-bold text-lg text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-puzzle-piece text-pink-500"></i>
+                        Wizard's Challenge!
+                    </h2>
+                    
+                    <!-- Trivia Intro Screen -->
+                    <div id="quiz-start-screen" class="space-y-4 text-center py-4 bg-indigo-50 rounded-2xl p-4 border border-indigo-100">
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                            Can you find the hidden school objects? Listen to the voice instruction and click directly on the correct object inside the classroom map!
+                        </p>
+                        <button id="btn-start-quiz" class="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-circle-play text-lg"></i> Start Trivia Game!
+                        </button>
+                    </div>
+
+                    <!-- Active Game Screen -->
+                    <div id="quiz-active-screen" class="hidden space-y-4 py-1">
+                        <div class="bg-gradient-to-br from-indigo-50 to-pink-50 border-2 border-indigo-100 rounded-2xl p-4 text-center shadow-inner relative overflow-hidden">
+                            <!-- Background star decor -->
+                            <i class="fa-solid fa-wand-magic absolute -right-2 -bottom-2 text-indigo-100 text-5xl opacity-50"></i>
+                            
+                            <span class="text-[10px] uppercase font-bold text-pink-500 tracking-wider block">Where is the...</span>
+                            <h3 id="quiz-target" class="text-2xl font-black text-indigo-900 my-1 drop-shadow-sm">...</h3>
+                            
+                            <div class="flex items-center justify-center gap-2 mt-3">
+                                <button id="btn-quiz-speak" class="px-3.5 py-1.5 bg-white border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50 text-xs font-bold rounded-xl flex items-center gap-1.5 transition shadow">
+                                    <i class="fa-solid fa-volume-high text-pink-500"></i> Listen Again
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Game status tracking -->
+                        <div class="flex items-center justify-between text-xs text-slate-500 border-b border-slate-100 pb-2 font-bold">
+                            <span>Question: <strong id="quiz-idx" class="text-indigo-600">1 / 5</strong></span>
+                            <span>Score: <strong id="quiz-score" class="text-emerald-500 text-sm">0</strong></span>
+                        </div>
+
+                        <!-- Interactive feedback text -->
+                        <div id="quiz-feedback" class="hidden text-center p-2.5 rounded-xl text-xs font-bold">
+                            <!-- Dynamic feedback -->
+                        </div>
+
+                        <!-- Active Quiz Hint Box -->
+                        <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-3" id="quiz-hint-panel">
+                            <button id="btn-quiz-hint" class="w-full flex items-center justify-between text-xs font-bold text-amber-800 hover:text-amber-950 transition">
+                                <span><i class="fa-solid fa-lightbulb text-amber-500"></i> Need a magic hint?</span>
+                                <i class="fa-solid fa-chevron-down" id="hint-chevron"></i>
+                            </button>
+                            <p id="quiz-hint-text" class="hidden mt-2 text-xs text-amber-950 leading-relaxed italic border-l-4 border-amber-400 pl-2">
+                                Click to reveal the English definition of this object.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Trivia Result Screen -->
+                    <div id="quiz-result-screen" class="hidden text-center py-6 space-y-4 bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                        <div class="w-16 h-16 bg-yellow-100 text-yellow-500 rounded-full flex items-center justify-center text-3xl mx-auto animate-bounce shadow-md border-2 border-yellow-200">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-900">Challenge Completed!</h3>
+                            <p class="text-xs text-slate-500 mt-1">You are a fantastic English word explorer!</p>
+                        </div>
+                        <div class="bg-white border-2 border-emerald-100 rounded-2xl p-4">
+                            <span class="text-xs text-slate-400 font-bold block uppercase">Gold Star Score</span>
+                            <span id="quiz-final-score" class="text-3xl font-black text-indigo-600">0 / 5</span>
+                        </div>
+                        <button id="btn-restart-quiz" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-2xl shadow-lg flex items-center justify-center gap-2 transition active:scale-95 text-sm">
+                            <i class="fa-solid fa-arrows-rotate"></i> Play Again!
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom step tutorial -->
+            <div class="mt-6 p-3.5 bg-indigo-50 border-2 border-indigo-100 rounded-2xl text-xs text-indigo-900 font-medium">
+                <h4 class="font-bold mb-1 flex items-center gap-1.5 text-indigo-700">
+                    <i class="fa-solid fa-circle-question"></i> How to Play?
+                </h4>
+                <p class="leading-relaxed" id="instructions-guide">
+                    1. Tap any cartoon object in the classroom.<br>
+                    2. Listen to the native speaker pronounce it.<br>
+                    3. Learn its definition and check out its example sentence!
+                </p>
+            </div>
+        </section>
+
+        <!-- PANEL CENTRAL: Virtual Classroom Map SVG and Popup Box -->
+        <section class="xl:col-span-3 bg-white p-5 rounded-3xl border-4 border-slate-100 shadow-xl relative flex flex-col items-center justify-center min-h-[400px] overflow-hidden">
+            
+            <!-- Classroom vector outer border wrapper -->
+            <div class="relative w-full aspect-[5/3] bg-sky-200 rounded-2xl overflow-hidden shadow-inner border-4 border-indigo-400">
+                
+                <svg id="classroom-svg" viewBox="0 0 1000 600" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+                    
+                    <!-- BACKGROUND WALLS -->
+                    <rect x="0" y="0" width="1000" height="420" fill="#E0F2FE" />
+                    
+                    <!-- WOOD FLOOR -->
+                    <polygon points="0,420 1000,420 1000,600 0,600" fill="#FDE047" />
+                    <!-- Floor board patterns -->
+                    <line x1="0" y1="420" x2="1000" y2="420" stroke="#F59E0B" stroke-width="6" />
+                    <line x1="200" y1="420" x2="100" y2="600" stroke="#F59E0B" stroke-dasharray="10 5" stroke-width="2" />
+                    <line x1="500" y1="420" x2="500" y2="600" stroke="#F59E0B" stroke-dasharray="10 5" stroke-width="2" />
+                    <line x1="800" y1="420" x2="900" y2="600" stroke="#F59E0B" stroke-dasharray="10 5" stroke-width="2" />
+
+                    <!-- PLAY CARPET: Large fuzzy circular layout -->
+                    <ellipse cx="500" cy="510" rx="300" ry="70" fill="#F472B6" opacity="0.65" />
+                    <ellipse cx="500" cy="510" rx="270" ry="55" fill="none" stroke="#EC4899" stroke-width="4" stroke-dasharray="8 6" />
+
+                    <!-- DECORATIVE FLAGS (Garlands) hanging on the ceiling -->
+                    <path d="M 0,10 Q 250,80 500,10 Q 750,80 1000,10" fill="none" stroke="#94A3B8" stroke-width="3" />
+                    <!-- Colorful triangle party banners -->
+                    <polygon points="40,20 80,20 60,60" fill="#EF4444" />
+                    <polygon points="120,32 160,32 140,70" fill="#3B82F6" />
+                    <polygon points="200,40 240,40 220,80" fill="#10B981" />
+                    <polygon points="280,43 320,43 300,82" fill="#F59E0B" />
+                    <polygon points="360,42 400,42 380,80" fill="#8B5CF6" />
+                    <polygon points="440,36 480,36 460,74" fill="#EC4899" />
+                    <polygon points="520,36 560,36 540,74" fill="#EF4444" />
+                    <polygon points="600,42 640,42 620,80" fill="#3B82F6" />
+                    <polygon points="680,43 720,43 700,82" fill="#10B981" />
+                    <polygon points="760,40 800,40 780,80" fill="#F59E0B" />
+                    <polygon points="840,32 880,32 860,70" fill="#8B5CF6" />
+                    <polygon points="920,20 960,20 940,60" fill="#EC4899" />
+
+                    <!-- OBJECT 1: BOOKSHELF (Piny bookshelf holding a sleeping bear plushie) -->
+                    <g id="obj-bookshelf" class="interactive-object">
+                        <rect x="50" y="80" width="130" height="360" rx="14" fill="#F97316" stroke="#C2410C" stroke-width="5" />
+                        <line x1="50" y1="170" x2="180" y2="170" stroke="#C2410C" stroke-width="5" />
+                        <line x1="50" y1="260" x2="180" y2="260" stroke="#C2410C" stroke-width="5" />
+                        <line x1="50" y1="350" x2="180" y2="350" stroke="#C2410C" stroke-width="5" />
+                        <!-- Bookshelf books shelf 1 -->
+                        <rect x="65" y="105" width="22" height="65" fill="#EF4444" rx="3" stroke="#B91C1C" stroke-width="1.5" />
+                        <rect x="87" y="100" width="25" height="70" fill="#3B82F6" rx="3" stroke="#1D4ED8" stroke-width="1.5" />
+                        <rect x="112" y="115" width="20" height="55" fill="#F59E0B" rx="3" stroke="#B45309" stroke-width="1.5" />
+                        <path d="M 132 170 L 150 120 L 165 125 L 147 170 Z" fill="#10B981" stroke="#047857" stroke-width="1.5" />
+                        <!-- Sleeping Teddy Bear plush on shelf 2 -->
+                        <circle cx="110" cy="225" r="24" fill="#A16207" />
+                        <circle cx="92" cy="208" r="8" fill="#A16207" />
+                        <circle cx="128" cy="208" r="8" fill="#A16207" />
+                        <circle cx="92" cy="208" r="4" fill="#FCA5A5" />
+                        <circle cx="128" cy="208" r="4" fill="#FCA5A5" />
+                        <circle cx="110" cy="232" r="12" fill="#FEF08A" />
+                        <path d="M 100,221 Q 104,226 104,221" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M 116,221 Q 120,226 120,221" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" />
+                        <polygon points="108,228 112,228 110,231" fill="#000000" />
+                        <!-- Bookshelf shelf 3 -->
+                        <rect x="75" y="285" width="24" height="65" fill="#10B981" rx="3" stroke="#047857" stroke-width="1.5" />
+                        <path d="M 115 350 L 140 300 L 155 305 L 130 350 Z" fill="#EF4444" stroke="#B91C1C" stroke-width="1.5" />
+                        <!-- Plant pot decorative topper -->
+                        <ellipse cx="115" cy="65" rx="18" ry="12" fill="#EA580C" />
+                        <path d="M 105 60 Q 90 25 108 15 Q 112 40 115 60 Q 128 30 132 20 Q 125 45 115 65 Z" fill="#22C55E" />
+                    </g>
+
+                    <!-- OBJECT 2: CLOCK (Friendly Smiling Cat Clock 🐱) -->
+                    <g id="obj-clock" class="interactive-object">
+                        <!-- Cat ears -->
+                        <polygon points="805,100 820,50 840,80" fill="#FBBF24" stroke="#D97706" stroke-width="4" />
+                        <polygon points="895,100 880,50 860,80" fill="#FBBF24" stroke="#D97706" stroke-width="4" />
+                        <!-- Clock Dial face -->
+                        <circle cx="850" cy="100" r="45" fill="#FFFBEB" stroke="#D97706" stroke-width="5" />
+                        <circle cx="850" cy="100" r="38" fill="none" stroke="#FEF3C7" stroke-width="2" />
+                        <!-- Cute eyes -->
+                        <circle cx="838" cy="85" r="3.5" fill="#000000" />
+                        <circle cx="862" cy="85" r="3.5" fill="#000000" />
+                        <!-- Smile -->
+                        <path d="M 845,95 Q 850,99 855,95 Q 860,99 865,95" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" />
+                        <!-- Dial ticks -->
+                        <circle cx="850" cy="63" r="3" fill="#D97706" />
+                        <circle cx="850" cy="137" r="3" fill="#D97706" />
+                        <circle cx="813" cy="100" r="3" fill="#D97706" />
+                        <circle cx="887" cy="100" r="3" fill="#D97706" />
+                        <!-- Cartoon hands pointing at 10:10 -->
+                        <line x1="850" y1="100" x2="832" y2="82" stroke="#1E293B" stroke-width="5" stroke-linecap="round" />
+                        <line x1="850" y1="100" x2="872" y2="92" stroke="#1E293B" stroke-width="4" stroke-linecap="round" />
+                        <circle cx="850" cy="100" r="6" fill="#EF4444" />
+                    </g>
+
+                    <!-- OBJECT 3: BOARD (Chalkboard with stars, sun, and alphabet doodles) -->
+                    <g id="obj-board" class="interactive-object">
+                        <rect x="250" y="50" width="500" height="230" rx="16" fill="#854D0E" stroke="#5F370E" stroke-width="6" />
+                        <rect x="262" y="62" width="476" height="206" rx="8" fill="#14532D" />
+                        <!-- Chalk tray -->
+                        <rect x="440" y="274" width="120" height="10" fill="#E2E8F0" rx="3" stroke="#94A3B8" stroke-width="1" />
+                        <rect x="465" y="269" width="18" height="6" fill="#FFFFFF" rx="1" />
+                        <rect x="495" y="267" width="20" height="8" fill="#E0F2FE" rx="1" />
+                        <rect x="525" y="268" width="15" height="7" fill="#FCE7F3" rx="1" />
+                        <!-- Fun chalk sketches -->
+                        <circle cx="320" cy="115" r="16" fill="none" stroke="#FDE047" stroke-width="2.5" stroke-dasharray="4" />
+                        <circle cx="320" cy="115" r="11" fill="none" stroke="#FDE047" stroke-width="2" />
+                        <path d="M 316,113 Q 320,117 324,113" fill="none" stroke="#FDE047" stroke-width="1.5" />
+                        <!-- Cloud and raindrops -->
+                        <path d="M 640,110 Q 650,95 665,100 Q 680,95 685,110 Q 695,115 685,125 L 635,125 Z" fill="none" stroke="#BAE6FD" stroke-width="2.5" />
+                        <line x1="645" y1="133" x2="640" y2="140" stroke="#BAE6FD" stroke-width="2" stroke-linecap="round" />
+                        <line x1="660" y1="133" x2="655" y2="140" stroke="#BAE6FD" stroke-width="2" stroke-linecap="round" />
+                        <line x1="675" y1="133" x2="670" y2="140" stroke="#BAE6FD" stroke-width="2" stroke-linecap="round" />
+                        <!-- Letters and central star -->
+                        <path d="M 460,115 L 470,90 L 480,115 M 464,107 L 476,107" fill="none" stroke="#FEF08A" stroke-width="3" stroke-linecap="round" />
+                        <path d="M 500,90 L 512,115 L 524,90" fill="none" stroke="#F9A8D4" stroke-width="3" stroke-linecap="round" />
+                        <path d="M 490,140 L 493,148 L 501,148 L 495,153 L 497,161 L 490,156 L 483,161 L 485,153 L 479,148 L 487,148 Z" fill="none" stroke="#86EFAC" stroke-width="2" />
+                    </g>
+
+                    <!-- OBJECT 15: WINDOW (Cozy window frame showing a grinning outside sun) -->
+                    <g id="obj-window" class="interactive-object">
+                        <!-- Outside view: blue skies and shiny morning sun -->
+                        <path d="M 885,155 L 985,155 L 985,315 L 885,315 Z" fill="#7DD3FC" />
+                        <!-- Cute sun in background -->
+                        <circle cx="955" cy="180" r="18" fill="#F59E0B" />
+                        <circle cx="955" cy="180" r="15" fill="#FBBF24" />
+                        <circle cx="949" cy="177" r="1.5" fill="#000000" />
+                        <circle cx="961" cy="177" r="1.5" fill="#000000" />
+                        <path d="M 952,183 Q 955,186 958,183" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" />
+                        <!-- Cotton puff clouds -->
+                        <path d="M 900,200 Q 910,190 922,193 Q 934,190 938,202 L 890,202 Z" fill="#FFFFFF" opacity="0.9" />
+                        <!-- Window pane borders -->
+                        <rect x="885" y="155" width="100" height="160" rx="20" fill="none" stroke="#FFFFFF" stroke-width="6" />
+                        <line x1="935" y1="155" x2="935" y2="315" stroke="#FFFFFF" stroke-width="4" />
+                        <line x1="885" y1="235" x2="985" y2="235" stroke="#FFFFFF" stroke-width="4" />
+                        <!-- Polka-dotted curtains -->
+                        <path d="M 885,155 Q 910,200 890,315 L 885,315 Z" fill="#EF4444" />
+                        <circle cx="890" cy="180" r="3" fill="#FFFFFF" />
+                        <circle cx="893" cy="220" r="3" fill="#FFFFFF" />
+                        <circle cx="888" cy="260" r="3" fill="#FFFFFF" />
+                        <path d="M 985,155 Q 960,200 980,315 L 985,315 Z" fill="#EF4444" />
+                        <circle cx="980" cy="180" r="3" fill="#FFFFFF" />
+                        <circle cx="977" cy="220" r="3" fill="#FFFFFF" />
+                        <circle cx="982" cy="260" r="3" fill="#FFFFFF" />
+                    </g>
+
+                    <!-- OBJECT 11: MAP (Treasure map with sea monster routes) -->
+                    <g id="obj-map" class="interactive-object">
+                        <!-- Old parchment scroll style -->
+                        <rect x="185" y="75" width="60" height="90" rx="6" fill="#F59E0B" stroke="#78350F" stroke-width="4" />
+                        <rect x="190" y="80" width="50" height="80" rx="3" fill="#FEF3C7" />
+                        <!-- Island drawing -->
+                        <path d="M 195,115 Q 210,105 220,118 Q 235,108 238,125 Q 215,135 195,115 Z" fill="#86EFAC" stroke="#22C55E" stroke-width="1" />
+                        <polygon points="202,145 214,145 208,138" fill="#EF4444" />
+                        <line x1="208" y1="138" x2="208" y2="145" stroke="#000000" stroke-width="0.8" />
+                        <!-- Pirate X mark -->
+                        <path d="M 225,112 L 231,118 M 231,112 L 225,118" fill="none" stroke="#EF4444" stroke-width="2" />
+                    </g>
+
+                    <!-- OBJECT 4: DESK (Chubby colored study desk) -->
+                    <g id="obj-desk" class="interactive-object">
+                        <!-- Curved desk support pillars -->
+                        <rect x="360" y="380" width="18" height="150" fill="#38BDF8" rx="6" stroke="#0284C7" stroke-width="3" />
+                        <rect x="655" y="380" width="18" height="150" fill="#38BDF8" rx="6" stroke="#0284C7" stroke-width="3" />
+                        <!-- Desktop beam shelf -->
+                        <rect x="330" y="370" width="370" height="30" fill="#A855F7" rx="8" stroke="#7E22CE" stroke-width="3" />
+                        <!-- Underneath container shelf -->
+                        <rect x="350" y="390" width="330" height="40" fill="#818CF8" rx="10" stroke="#4F46E5" stroke-width="3" />
+                        <path d="M 505,405 Q 515,413 525,405" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+                        <!-- Soft wooden desktop surface -->
+                        <rect x="280" y="350" width="460" height="25" rx="10" fill="#F97316" stroke="#C2410C" stroke-width="3" />
+                        <!-- Red teacher apple token 🍎 -->
+                        <circle cx="315" cy="340" r="9" fill="#EF4444" />
+                        <path d="M 315,331 Q 318,324 322,328" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" />
+                    </g>
+
+                    <!-- OBJECT 5: CHAIR (Cute colorful plastic chair) -->
+                    <g id="obj-chair" class="interactive-object">
+                        <!-- Wooden legs -->
+                        <line x1="740" y1="360" x2="735" y2="495" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" />
+                        <line x1="810" y1="360" x2="815" y2="495" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" />
+                        <line x1="720" y1="380" x2="710" y2="525" stroke="#D97706" stroke-width="9" stroke-linecap="round" />
+                        <line x1="830" y1="380" x2="840" y2="525" stroke="#D97706" stroke-width="9" stroke-linecap="round" />
+                        <!-- Backrest cushion shape -->
+                        <rect x="730" y="265" width="90" height="95" rx="20" fill="#EC4899" stroke="#BE185D" stroke-width="4" />
+                        <!-- Cloud/heart slot in seatback -->
+                        <path d="M 765,295 Q 775,285 785,295 Q 795,285 805,295 L 805,305 Q 785,320 765,305 Z" fill="#E0F2FE" />
+                        <!-- cyan seat -->
+                        <polygon points="705,360 845,360 825,395 685,395" fill="#06B6D4" stroke="#0891B2" stroke-width="4" />
+                    </g>
+
+                    <!-- OBJECT 6: GLOBE (Round desk-sized globe sphere) -->
+                    <g id="obj-globe" class="interactive-object">
+                        <path d="M 370,355 L 410,355 M 390,355 L 390,340" stroke="#8B5CF6" stroke-width="6" stroke-linecap="round" />
+                        <path d="M 390,340 A 45,45 0 0,1 390,250" fill="none" stroke="#06B6D4" stroke-width="7" stroke-linecap="round" />
+                        <circle cx="410" cy="295" r="38" fill="#3B82F6" stroke="#1D4ED8" stroke-width="3" />
+                        <!-- Abstract continents -->
+                        <path d="M 392,272 Q 408,268 412,278 Q 408,290 392,285 Z" fill="#22C55E" />
+                        <path d="M 418,292 Q 432,282 442,298 Q 432,315 418,312 Q 412,298 418,292 Z" fill="#22C55E" />
+                    </g>
+
+                    <!-- OBJECT 7: NOTEBOOK (Spiral exercise book with star badge) -->
+                    <g id="obj-notebook" class="interactive-object">
+                        <polygon points="500,362 570,362 565,378 495,378" fill="#EC4899" stroke="#BE185D" stroke-width="1.5" />
+                        <!-- Book pages -->
+                        <polygon points="502,363 532,363 530,377 498,377" fill="#FFFFFF" />
+                        <polygon points="536,363 566,363 562,377 534,377" fill="#FFFFFF" />
+                        <!-- Binding rings -->
+                        <line x1="534" y1="362" x2="532" y2="378" stroke="#3B82F6" stroke-width="2.5" stroke-dasharray="2 2" />
+                        <!-- Star stickers -->
+                        <polygon points="515,368 517,372 522,372 518,374 520,378 515,375 510,378 512,374 508,372 513,372" fill="#FBBF24" />
+                    </g>
+
+                    <!-- OBJECT 8: PENCIL CASE (Cute monster pencil pouch) -->
+                    <g id="obj-pencil_case" class="interactive-object">
+                        <rect x="590" y="365" width="55" height="18" rx="8" fill="#FBBF24" stroke="#D97706" stroke-width="2.5" />
+                        <line x1="597" y1="367" x2="638" y2="367" stroke="#EF4444" stroke-width="2.5" />
+                        <!-- Googly eyes -->
+                        <circle cx="612" cy="374" r="3.5" fill="#FFFFFF" />
+                        <circle cx="612" cy="374" r="1.5" fill="#000000" />
+                        <circle cx="622" cy="374" r="3.5" fill="#FFFFFF" />
+                        <circle cx="622" cy="374" r="1.5" fill="#000000" />
+                    </g>
+
+                    <!-- OBJECT 9: RULER (Cute ruler with funny smile) -->
+                    <g id="obj-ruler" class="interactive-object">
+                        <polygon points="460,378 520,372 522,376 462,382" fill="#F97316" stroke="#C2410C" stroke-width="1.5" />
+                        <circle cx="490" cy="376" r="1" fill="#000000" />
+                        <circle cx="494" cy="375" r="1" fill="#000000" />
+                    </g>
+
+                    <!-- OBJECT 13: SCISSORS (Child safety scissors) -->
+                    <g id="obj-scissors" class="interactive-object">
+                        <circle cx="652" cy="374" r="5" fill="none" stroke="#EF4444" stroke-width="3" />
+                        <circle cx="658" cy="376" r="5" fill="none" stroke="#10B981" stroke-width="3" />
+                        <line x1="654" y1="374" x2="636" y2="371" stroke="#94A3B8" stroke-width="3.5" stroke-linecap="round" />
+                        <line x1="656" y1="375" x2="637" y2="375" stroke="#94A3B8" stroke-width="3" stroke-linecap="round" />
+                    </g>
+
+                    <!-- OBJECT 14: GLUE (Blue glue stick) -->
+                    <g id="obj-glue" class="interactive-object">
+                        <rect x="438" y="364" width="10" height="18" rx="2" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5" />
+                        <rect x="438" y="368" width="10" height="10" fill="#FDE047" />
+                        <rect x="439" y="359" width="8" height="5" rx="1.5" fill="#EF4444" />
+                    </g>
+
+                    <!-- OBJECT 10: BACKPACK (Chubby bear ears backpack 🎒) -->
+                    <g id="obj-backpack" class="interactive-object">
+                        <ellipse cx="280" cy="515" rx="55" ry="12" fill="#9F1239" opacity="0.3" />
+                        <!-- Backpack bear ears -->
+                        <circle cx="250" cy="415" r="12" fill="#8B5CF6" stroke="#6D28D9" stroke-width="3" />
+                        <circle cx="250" cy="415" r="6" fill="#F472B6" />
+                        <circle cx="310" cy="415" r="12" fill="#8B5CF6" stroke="#6D28D9" stroke-width="3" />
+                        <circle cx="310" cy="415" r="6" fill="#F472B6" />
+                        <!-- Fluffy body -->
+                        <rect x="235" y="415" width="90" height="100" rx="24" fill="#A78BFA" stroke="#6D28D9" stroke-width="4" />
+                        <!-- Front pouch -->
+                        <rect x="245" y="450" width="70" height="55" rx="14" fill="#C084FC" stroke="#6D28D9" stroke-width="2.5" />
+                        <ellipse cx="280" cy="478" rx="15" ry="8" fill="#FFFFFF" opacity="0.8" />
+                        <ellipse cx="270" cy="478" rx="10" ry="6" fill="#FFFFFF" opacity="0.8" />
+                        <ellipse cx="290" cy="478" rx="10" ry="6" fill="#FFFFFF" opacity="0.8" />
+                    </g>
+
+                    <!-- OBJECT 12: TRASH CAN (Eco trash bin) -->
+                    <g id="obj-trash_can" class="interactive-object">
+                        <ellipse cx="207" cy="512" rx="18" ry="5" fill="#78350F" opacity="0.3" />
+                        <path d="M 192,460 L 222,460 L 217,510 L 197,510 Z" fill="#4ADE80" stroke="#166534" stroke-width="3" />
+                        <path d="M 202,485 L 212,485 L 207,478 Z" fill="#166534" />
+                        <!-- Overflow paper scraps -->
+                        <path d="M 195,460 Q 200,448 205,458 Z" fill="#FEF08A" />
+                        <path d="M 208,460 Q 214,450 218,459 Z" fill="#93C5FD" />
+                    </g>
+
+                    <!-- HOTSPOTS GUIDE STARS -->
+                    <g id="hotspots-layer" class="pointer-events-none">
+                        <g class="hotspot" data-id="board">
+                            <polygon points="500,145 503,153 511,153 505,158 507,166 500,161 493,166 495,158 489,153 497,153" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="bookshelf">
+                            <polygon points="115,205 118,213 126,213 120,218 122,226 115,221 108,226 110,218 104,213 112,213" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="clock">
+                            <polygon points="850,85 853,93 861,93 855,98 857,106 850,101 843,106 845,98 839,93 847,93" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="desk">
+                            <polygon points="580,425 583,433 591,433 585,438 587,446 580,441 573,446 575,438 569,433 577,433" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="chair">
+                            <polygon points="775,335 778,343 786,343 780,348 782,356 775,351 768,356 770,348 764,343 772,343" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="globe">
+                            <polygon points="410,280 413,288 421,288 415,293 417,301 410,296 403,301 405,293 399,288 407,288" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="notebook">
+                            <polygon points="532,357 535,365 543,365 537,370 539,378 532,373 525,378 527,370 521,365 529,365" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="pencil_case">
+                            <polygon points="615,359 618,367 626,367 620,372 622,380 615,375 608,380 610,372 604,367 612,367" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="ruler">
+                            <polygon points="490,362 493,370 501,370 495,375 497,383 490,378 483,383 485,375 479,370 487,370" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="backpack">
+                            <polygon points="280,450 283,458 291,458 285,463 287,471 280,466 273,471 275,463 269,458 277,458" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="map">
+                            <polygon points="215,105 218,113 226,113 220,118 222,126 215,121 208,126 210,118 204,113 212,113" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="trash_can">
+                            <polygon points="205,470 208,478 216,478 210,483 212,491 205,486 198,491 200,483 194,478 202,478" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="scissors">
+                            <polygon points="648,359 651,367 659,367 653,372 655,380 648,375 641,380 643,372 637,367 645,367" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="glue">
+                            <polygon points="443,356 446,364 454,364 448,369 450,377 443,372 436,377 438,369 432,364 440,364" class="magic-star" fill="#FBBF24" />
+                        </g>
+                        <g class="hotspot" data-id="window">
+                            <polygon points="935,220 938,228 946,228 940,233 942,241 935,236 928,241 930,233 924,228 932,228" class="magic-star" fill="#FBBF24" />
+                        </g>
+                    </g>
+                </svg>
+
+                <!-- SPATIAL CONTIGUITY POPUP BOX -->
+                <div id="info-popup" class="absolute hidden bg-white rounded-2xl shadow-2xl border-4 border-indigo-400 p-4 max-w-[280px] w-full fade-in z-30 pointer-events-auto">
+                    <!-- Pointing arrow -->
+                    <div class="absolute w-4 h-4 bg-white border-t-4 border-l-4 border-indigo-400 transform rotate-45" id="popup-arrow"></div>
+                    
+                    <div class="flex items-start justify-between mb-1.5">
+                        <div class="flex items-center gap-2">
+                            <span id="popup-icon" class="text-indigo-600 text-xl"></span>
+                            <h3 id="popup-title" class="text-lg font-black text-indigo-900 tracking-tight">Object Name</h3>
+                        </div>
+                        <button id="close-popup" class="text-rose-400 hover:text-rose-600 transition p-0.5">
+                            <i class="fa-solid fa-circle-xmark text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 mb-2">
+                        <!-- Audio Pronounce -->
+                        <button id="btn-listen" class="px-2.5 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold text-xs rounded-xl flex items-center gap-1 transition-all active:scale-95">
+                            <i class="fa-solid fa-volume-high text-pink-500"></i> Pronounce
+                        </button>
+                        <!-- Usage sentence toggle -->
+                        <button id="btn-translate" class="px-2.5 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold text-xs rounded-xl flex items-center gap-1 transition-all">
+                            <i class="fa-solid fa-book-open text-emerald-600"></i> Example
+                        </button>
+                    </div>
+
+                    <!-- English Definition (A2 Level) -->
+                    <p id="popup-def" class="text-slate-600 text-xs leading-relaxed font-semibold italic border-l-4 border-indigo-300 pl-2 mb-2">
+                        Simple English definition...
+                    </p>
+
+                    <!-- English Sentence Usage Card -->
+                    <div id="translation-block" class="hidden text-xs text-emerald-900 bg-emerald-50 p-2.5 rounded-xl border border-emerald-100 fade-in">
+                        <span class="font-extrabold block mb-0.5" id="popup-spanish-name">Example Sentence</span>
+                        <p id="popup-def-es">English sentence showing how to use the word...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick instructions bubble -->
+            <div id="initial-hint" class="absolute bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs py-2 px-5 rounded-full shadow-lg font-bold flex items-center gap-2 animate-bounce bottom-6">
+                <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i> Tap any school object to explore and hear its magic voice!
+            </div>
+        </section>
+    </main>
+
+    <!-- CELEBRATION CONGRATS MODAL -->
+    <div id="congrats-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+        <canvas id="confetti-canvas" class="absolute inset-0 pointer-events-none w-full h-full"></canvas>
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full text-center shadow-2xl border-4 border-yellow-300 relative z-10 fade-in">
+            <div class="w-16 h-16 bg-yellow-100 text-yellow-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border-2 border-yellow-200 animate-bounce">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 mb-2">Super Champion! 🌟</h3>
+            <p class="text-xs text-slate-500 mb-6 leading-relaxed font-medium">
+                Awesome! You discovered and listened to all <span class="font-bold text-slate-800">15 playful classroom objects</span>. Your English vocabulary is shining bright today!
+            </p>
+            <div class="space-y-2">
+                <button id="btn-congrats-close" class="w-full py-3 bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-white text-sm font-extrabold rounded-2xl transition shadow-lg shadow-emerald-100 active:scale-95">
+                    Keep Playing
+                </button>
+                <button id="btn-congrats-reset" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-2xl transition">
+                    Reset Adventure
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPREHENSIVE ACCESSIBLE FOOTER -->
+    <footer class="bg-white/60 border-t-4 border-slate-100 py-5 px-6 mt-6 rounded-t-3xl">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-semibold">
+            <div>
+                <p class="text-slate-500">My Magic Classroom • Interactive English A2</p>
+                <p class="mt-0.5 font-normal">Created using gamification and audio-visual association strategies for early language acquisition.</p>
+            </div>
+            <div class="flex flex-wrap gap-4 items-center">
+                <span class="flex items-center gap-1 text-indigo-500"><i class="fa-solid fa-gamepad"></i> Gamified Learning</span>
+                <span class="flex items-center gap-1 text-pink-500"><i class="fa-solid fa-comments"></i> Speech Synthesis</span>
+                <span class="text-amber-500 font-bold">• Global Kids Initiative</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. ENGLISH VOCABULARY DATABASE (15 OBJECTOS) ---
+        const vocabularyData = {
+            board: {
+                name: "Board",
+                secondaryName: "Blackboard",
+                icon: '<i class="fa-solid fa-square"></i>',
+                def: "A large green board on the wall. Teachers write on it with chalk.",
+                defEs: "Example: 'Write your name on the board.'",
+                targetX: 50,
+                targetY: 26
+            },
+            bookshelf: {
+                name: "Bookshelf",
+                secondaryName: "Bookcase",
+                icon: '<i class="fa-solid fa-book-bookmark"></i>',
+                def: "A piece of furniture with shelves where you store your school books.",
+                defEs: "Example: 'Put the book back on the bookshelf.'",
+                targetX: 11.5,
+                targetY: 45
+            },
+            clock: {
+                name: "Clock",
+                secondaryName: "Wall Clock",
+                icon: '<i class="fa-solid fa-clock"></i>',
+                def: "A round instrument on the wall that tells us the exact time.",
+                defEs: "Example: 'Look at the clock, it is time for class!'",
+                targetX: 85,
+                targetY: 17
+            },
+            desk: {
+                name: "Desk",
+                secondaryName: "Study Table",
+                icon: '<i class="fa-solid fa-table"></i>',
+                def: "A table where you sit to write, study, or do school work.",
+                defEs: "Example: 'Keep your desk clean and neat.'",
+                targetX: 58,
+                targetY: 62
+            },
+            chair: {
+                name: "Chair",
+                secondaryName: "Seat",
+                icon: '<i class="fa-solid fa-chair"></i>',
+                def: "An object with four legs. You sit on it at your desk.",
+                defEs: "Example: 'Please sit down on your chair.'",
+                targetX: 77.5,
+                targetY: 58
+            },
+            globe: {
+                name: "Globe",
+                secondaryName: "World Sphere",
+                icon: '<i class="fa-solid fa-earth-americas"></i>',
+                def: "A round model of the Earth. It shows countries, oceans, and maps.",
+                defEs: "Example: 'We found our country on the globe.'",
+                targetX: 41,
+                targetY: 49
+            },
+            notebook: {
+                name: "Notebook",
+                secondaryName: "Exercise Book",
+                icon: '<i class="fa-solid fa-book-open"></i>',
+                def: "A book with blank pages where you can write and draw things.",
+                defEs: "Example: 'Write the spelling words in your notebook.'",
+                targetX: 53,
+                targetY: 61
+            },
+            pencil_case: {
+                name: "Pencil case",
+                secondaryName: "Pencil Holder",
+                icon: '<i class="fa-solid fa-pencil"></i>',
+                def: "A small bag to keep your pencils, pens, and erasers safe.",
+                defEs: "Example: 'My pencil case is bright yellow.'",
+                targetX: 61.5,
+                targetY: 61.5
+            },
+            ruler: {
+                name: "Ruler",
+                secondaryName: "Measuring Tool",
+                icon: '<i class="fa-solid fa-ruler-horizontal"></i>',
+                def: "A straight plastic tool you use to measure things or draw lines.",
+                defEs: "Example: 'Use a ruler to draw a straight line.'",
+                targetX: 49,
+                targetY: 62.5
+            },
+            backpack: {
+                name: "Backpack",
+                secondaryName: "School Bag",
+                icon: '<i class="fa-solid fa-bag-shopping"></i>',
+                def: "A bag you wear on your back to carry your school books.",
+                defEs: "Example: 'Pack your backpack before you go to sleep.'",
+                targetX: 28,
+                targetY: 77
+            },
+            map: {
+                name: "Map",
+                secondaryName: "World Map",
+                icon: '<i class="fa-solid fa-map"></i>',
+                def: "A drawing of the world on the wall showing countries and oceans.",
+                defEs: "Example: 'The map shows rivers, mountains, and cities.'",
+                targetX: 21.5,
+                targetY: 20
+            },
+            trash_can: {
+                name: "Trash can",
+                secondaryName: "Waste Bin",
+                icon: '<i class="fa-solid fa-trash-can"></i>',
+                def: "A container on the floor where you throw away old papers and rubbish.",
+                defEs: "Example: 'Please put the paper inside the trash can.'",
+                targetX: 20.5,
+                targetY: 48.5
+            },
+            scissors: {
+                name: "Scissors",
+                secondaryName: "Shears",
+                icon: '<i class="fa-solid fa-scissors"></i>',
+                def: "A tool with two sharp blades used to cut paper and materials.",
+                defEs: "Example: 'Be careful when using the scissors!'",
+                targetX: 65.5,
+                targetY: 37.2
+            },
+            glue: {
+                name: "Glue",
+                secondaryName: "Glue Stick",
+                icon: '<i class="fa-solid fa-paintbrush"></i>',
+                def: "A sticky liquid or gel stick used to join papers together.",
+                defEs: "Example: 'Use the glue to paste the picture.'",
+                targetX: 44.3,
+                targetY: 37.1
+            },
+            window: {
+                name: "Window",
+                secondaryName: "Glass Window",
+                icon: '<i class="fa-solid fa-window-maximize"></i>',
+                def: "A glass opening in the wall that lets in light and lets you see outside.",
+                defEs: "Example: 'Open the window to get some fresh air.'",
+                targetX: 93.5,
+                targetY: 23.5
+            }
+        };
+
+        // --- 2. GLOBAL STATE CONFIGURATION ---
+        let currentMode = 'study'; // 'study' or 'quiz'
+        let discoveredObjects = new Set();
+        let currentSelectedId = null;
+        let showHints = true;
+        let voicesList = [];
+
+        // Quiz State variables
+        let quizActive = false;
+        let quizQuestions = [];
+        let quizCurrentIndex = 0;
+        let quizScoreCount = 0;
+        let quizCurrentTargetId = null;
+        let hintVisible = false;
+
+        // General DOM Selectors
+        const svgContainer = document.getElementById('classroom-svg');
+        const checklistContainer = document.getElementById('vocabulary-checklist');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const infoPopup = document.getElementById('info-popup');
+        const voiceSelect = document.getElementById('voice-select');
+        const initialHint = document.getElementById('initial-hint');
+        
+        // Popup DOM selectors
+        const popupTitle = document.getElementById('popup-title');
+        const popupIcon = document.getElementById('popup-icon');
+        const popupDef = document.getElementById('popup-def');
+        const popupDefEs = document.getElementById('popup-def-es');
+        const popupSpanishName = document.getElementById('popup-spanish-name');
+        const translationBlock = document.getElementById('translation-block');
+        const btnTranslate = document.getElementById('btn-translate');
+        const btnListen = document.getElementById('btn-listen');
+        const closePopupBtn = document.getElementById('close-popup');
+        
+        // Global controls
+        const toggleHintsBtn = document.getElementById('toggle-hints');
+        const hintsIcon = document.getElementById('hints-icon');
+        const hintsText = document.getElementById('hints-text');
+        const btnReset = document.getElementById('btn-reset');
+        
+        // Modal selectors
+        const congratsModal = document.getElementById('congrats-modal');
+        const btnCongratsClose = document.getElementById('btn-congrats-close');
+        const btnCongratsReset = document.getElementById('btn-congrats-reset');
+        const confettiCanvas = document.getElementById('confetti-canvas');
+
+        // Navigation Tabs
+        const tabStudy = document.getElementById('tab-study');
+        const tabQuiz = document.getElementById('tab-quiz');
+        const contentStudy = document.getElementById('content-study');
+        const contentQuiz = document.getElementById('content-quiz');
+        const instructionsGuide = document.getElementById('instructions-guide');
+
+        // Trivia DOM selectors
+        const quizStartScreen = document.getElementById('quiz-start-screen');
+        const quizActiveScreen = document.getElementById('quiz-active-screen');
+        const quizResultScreen = document.getElementById('quiz-result-screen');
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const quizTarget = document.getElementById('quiz-target');
+        const btnQuizSpeak = document.getElementById('btn-quiz-speak');
+        const quizIdx = document.getElementById('quiz-idx');
+        const quizScore = document.getElementById('quiz-score');
+        const quizFeedback = document.getElementById('quiz-feedback');
+        const btnQuizHint = document.getElementById('btn-quiz-hint');
+        const quizHintText = document.getElementById('quiz-hint-text');
+        const hintChevron = document.getElementById('hint-chevron');
+        const quizFinalScore = document.getElementById('quiz-final-score');
+        const btnRestartQuiz = document.getElementById('btn-restart-quiz');
+
+        // --- 3. SPEECH SYNTHESIS SETUP ---
+        function initializeSpeechVoices() {
+            if (typeof speechSynthesis === 'undefined') return;
+            voicesList = speechSynthesis.getVoices();
+            const englishVoices = voicesList.filter(voice => voice.lang.toLowerCase().includes('en-'));
+            voiceSelect.innerHTML = '';
+            
+            if (englishVoices.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = "";
+                opt.textContent = "Default Voice";
+                voiceSelect.appendChild(opt);
+                return;
+            }
+            
+            englishVoices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                
+                let label = voice.name;
+                if (voice.lang.includes('US') || voice.lang.includes('us')) label += ' (US)';
+                else if (voice.lang.includes('GB') || voice.lang.includes('gb') || voice.lang.includes('UK')) label += ' (UK)';
+                else if (voice.lang.includes('AU')) label += ' (Australia)';
+                else if (voice.lang.includes('CA')) label += ' (Canada)';
+                else label += ` (${voice.lang})`;
+
+                option.textContent = label;
+                if (voice.lang === 'en-US' && !voiceSelect.querySelector('[selected]')) {
+                    option.selected = true;
+                }
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        if (typeof speechSynthesis !== 'undefined') {
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = initializeSpeechVoices;
+            }
+            initializeSpeechVoices();
+        }
+
+        function speakWord(word, textDef = "") {
+            if (typeof speechSynthesis === 'undefined' || !word) return;
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(word);
+            const selectedVoiceName = voiceSelect.value;
+            if (selectedVoiceName) {
+                const voice = voicesList.find(v => v.name === selectedVoiceName);
+                if (voice) utterance.voice = voice;
+            }
+            
+            utterance.volume = 1.0;
+            utterance.rate = 0.85;
+            speechSynthesis.speak(utterance);
+            
+            if (textDef) {
+                setTimeout(() => {
+                    const defUtterance = new SpeechSynthesisUtterance(textDef);
+                    if (selectedVoiceName) {
+                        const voice = voicesList.find(v => v.name === selectedVoiceName);
+                        if (voice) defUtterance.voice = voice;
+                    }
+                    defUtterance.volume = 0.9;
+                    defUtterance.rate = 0.85;
+                    speechSynthesis.speak(defUtterance);
+                }, 1100);
+            }
+        }
+
+        // --- 4. TAB CONTROLS (EXPLORE VS TRIVIA) ---
+        tabStudy.addEventListener('click', () => {
+            currentMode = 'study';
+            
+            tabStudy.className = "flex-1 py-2 font-bold text-xs rounded-xl bg-white text-indigo-600 shadow-md transition-all flex items-center justify-center gap-1.5";
+            tabQuiz.className = "flex-1 py-2 font-bold text-xs rounded-xl text-slate-400 hover:text-slate-600 transition-all flex items-center justify-center gap-1.5";
+            
+            contentStudy.classList.remove('hidden');
+            contentQuiz.classList.add('hidden');
+            
+            instructionsGuide.innerHTML = `
+                1. Tap any cartoon object in the classroom.<br>
+                2. Listen to the native speaker pronounce it.<br>
+                3. Learn its definition and check out its example sentence!
+            `;
+            
+            clearClassroomHighlights();
+        });
+
+        tabQuiz.addEventListener('click', () => {
+            currentMode = 'quiz';
+            
+            tabQuiz.className = "flex-1 py-2 font-bold text-xs rounded-xl bg-white text-indigo-600 shadow-md transition-all flex items-center justify-center gap-1.5";
+            tabStudy.className = "flex-1 py-2 font-bold text-xs rounded-xl text-slate-400 hover:text-slate-600 transition-all flex items-center justify-center gap-1.5";
+            
+            contentStudy.classList.add('hidden');
+            contentQuiz.classList.remove('hidden');
+            
+            infoPopup.classList.add('hidden');
+            if (initialHint) initialHint.classList.add('hidden');
+            
+            instructionsGuide.innerHTML = `
+                <strong>🎮 The Trivia Challenge has started!</strong><br>
+                1. Listen to the word you need to find.<br>
+                2. If you need help, open the magical hint.<br>
+                3. Tap the classroom scene to match and win score!
+            `;
+            
+            clearClassroomHighlights();
+        });
+
+        // --- 5. TRIVIA GAME SYSTEM ---
+        btnStartQuiz.addEventListener('click', startQuiz);
+        btnRestartQuiz.addEventListener('click', startQuiz);
+
+        function startQuiz() {
+            quizActive = true;
+            quizScoreCount = 0;
+            quizCurrentIndex = 0;
+            
+            const keys = Object.keys(vocabularyData);
+            const shuffledKeys = keys.sort(() => 0.5 - Math.random());
+            quizQuestions = shuffledKeys.slice(0, 5);
+            
+            quizStartScreen.classList.add('hidden');
+            quizResultScreen.classList.add('hidden');
+            quizActiveScreen.classList.remove('hidden');
+            
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            quizCurrentTargetId = quizQuestions[quizCurrentIndex];
+            const item = vocabularyData[quizCurrentTargetId];
+            
+            quizTarget.textContent = item.name;
+            quizIdx.textContent = `${quizCurrentIndex + 1} / 5`;
+            quizScore.textContent = quizScoreCount;
+            
+            hideHint();
+            quizHintText.textContent = item.def;
+            
+            quizFeedback.classList.add('hidden');
+            quizFeedback.className = "text-center p-2.5 rounded-xl text-xs font-bold";
+            
+            speakWord("Can you find the " + item.name);
+            highlightHotspotForQuiz(quizCurrentTargetId);
+        }
+
+        function hideHint() {
+            hintVisible = false;
+            quizHintText.classList.add('hidden');
+            hintChevron.className = "fa-solid fa-chevron-down";
+        }
+
+        btnQuizHint.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hintVisible = !hintVisible;
+            if (hintVisible) {
+                quizHintText.classList.remove('hidden');
+                hintChevron.className = "fa-solid fa-chevron-up";
+            } else {
+                quizHintText.classList.add('hidden');
+                hintChevron.className = "fa-solid fa-chevron-down";
+            }
+        });
+
+        btnQuizSpeak.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (quizActive) {
+                const item = vocabularyData[quizCurrentTargetId];
+                speakWord(item.name);
+            }
+        });
+
+        function handleQuizClick(clickedId) {
+            if (!quizActive) return;
+            
+            const targetItem = vocabularyData[quizCurrentTargetId];
+            const clickedItem = vocabularyData[clickedId];
+            
+            if (clickedId === quizCurrentTargetId) {
+                quizScoreCount++;
+                speakWord("Excellent! Yes!");
+                
+                flashObjectColor(clickedId, 'emerald');
+                
+                quizFeedback.textContent = `Fabulous! You found the "${targetItem.name}". ⭐`;
+                quizFeedback.className = "text-center p-2.5 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 fade-in border border-emerald-200";
+                quizFeedback.classList.remove('hidden');
+                
+                quizActive = false;
+                setTimeout(() => {
+                    quizCurrentIndex++;
+                    if (quizCurrentIndex < 5) {
+                        quizActive = true;
+                        loadQuizQuestion();
+                    } else {
+                        endQuiz();
+                    }
+                }, 1800);
+            } else {
+                speakWord("Oh, try again!");
+                
+                flashObjectColor(clickedId, 'rose');
+                
+                quizFeedback.textContent = `Close! That is the "${clickedItem ? clickedItem.name : 'other object'}"... Keep searching!`;
+                quizFeedback.className = "text-center p-2.5 rounded-xl text-xs font-bold bg-rose-100 text-rose-800 fade-in border border-rose-200";
+                quizFeedback.classList.remove('hidden');
+            }
+        }
+
+        function flashObjectColor(id, colorClass) {
+            const el = document.getElementById(`obj-${id}`);
+            if (!el) return;
+            
+            const shadowColor = colorClass === 'emerald' ? 'rgba(52, 211, 153, 1)' : 'rgba(251, 113, 133, 1)';
+            el.style.filter = `drop-shadow(0px 0px 20px ${shadowColor})`;
+            el.style.transform = "scale(1.05)";
+            
+            setTimeout(() => {
+                if (currentMode === 'quiz') {
+                    el.style.filter = "none";
+                    el.style.transform = "none";
+                }
+            }, 1000);
+        }
+
+        function highlightHotspotForQuiz(targetId) {
+            if (!showHints) return;
+            document.querySelectorAll('.hotspot').forEach(hotspot => {
+                const isTarget = hotspot.getAttribute('data-id') === targetId;
+                const pathStar = hotspot.querySelector('.magic-star');
+                if (pathStar) {
+                    if (isTarget) {
+                        pathStar.setAttribute('fill', '#EF4444'); // Subtle highlight change to guide kids
+                    } else {
+                        pathStar.setAttribute('fill', '#FBBF24');
+                    }
+                }
+            });
+        }
+
+        function endQuiz() {
+            quizActive = false;
+            quizActiveScreen.classList.add('hidden');
+            quizResultScreen.classList.remove('hidden');
+            
+            quizFinalScore.textContent = `${quizScoreCount} / 5`;
+            
+            if (quizScoreCount === 5) {
+                speakWord("Wonderful! Perfect score! 5 out of 5 stars! You are amazing!");
+            } else if (quizScoreCount >= 3) {
+                speakWord("Splendid! You scored " + quizScoreCount + " stars. Well done!");
+            } else {
+                speakWord("Great effort! Keep practicing to win more gold stars.");
+            }
+        }
+
+        function clearClassroomHighlights() {
+            Object.keys(vocabularyData).forEach(id => {
+                const element = document.getElementById(`obj-${id}`);
+                if (element) {
+                    element.style.filter = "none";
+                    element.style.opacity = "1";
+                    element.style.transform = "none";
+                }
+            });
+            document.querySelectorAll('.hotspot').forEach(hotspot => {
+                const pathStar = hotspot.querySelector('.magic-star');
+                if (pathStar) pathStar.setAttribute('fill', '#FBBF24');
+            });
+        }
+
+        // --- 6. VOCABULARY LIST RENDER (EXPLORE MODE) ---
+        function renderChecklist() {
+            checklistContainer.innerHTML = '';
+            
+            Object.keys(vocabularyData).forEach(id => {
+                const item = vocabularyData[id];
+                const isDiscovered = discoveredObjects.has(id);
+                
+                const li = document.createElement('li');
+                li.id = `check-${id}`;
+                li.className = `flex items-center justify-between p-2.5 rounded-2xl border-2 transition-all cursor-pointer select-none ${
+                    isDiscovered 
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-950 shadow-sm' 
+                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-indigo-50 hover:border-indigo-100'
+                }`;
+                
+                li.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-sm ${isDiscovered ? 'text-emerald-500' : 'text-slate-300'}">
+                            ${isDiscovered ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>'}
+                        </span>
+                        <div class="text-left">
+                            <span class="font-bold text-xs block ${isDiscovered ? 'line-through decoration-emerald-200' : ''}">${item.name}</span>
+                            <span class="text-[10px] font-semibold text-slate-400">${isDiscovered ? item.secondaryName : 'Tap to reveal'}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        ${isDiscovered ? '<span class="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded-lg font-black uppercase">Visted!</span>' : ''}
+                        <button class="w-7 h-7 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-indigo-600 flex items-center justify-center transition active:scale-95">
+                            <i class="fa-solid fa-volume-high text-xs"></i>
+                        </button>
+                    </div>
+                `;
+                
+                li.addEventListener('click', (e) => {
+                    selectObject(id);
+                });
+                
+                checklistContainer.appendChild(li);
+            });
+        }
+
+        // --- 7. OBJECT SELECTION & FLOATING INTERACTION POPUP ---
+        function selectObject(id) {
+            if (currentMode === 'quiz') {
+                handleQuizClick(id);
+                return;
+            }
+
+            const item = vocabularyData[id];
+            if (!item) return;
+
+            if (initialHint) {
+                initialHint.classList.add('hidden');
+            }
+
+            currentSelectedId = id;
+            discoveredObjects.add(id);
+            
+            updateProgress();
+            renderChecklist();
+            highlightSVGElement(id);
+            
+            speakWord(item.name);
+            
+            popupIcon.innerHTML = item.icon;
+            popupTitle.textContent = item.name;
+            popupDef.textContent = item.def;
+            popupSpanishName.textContent = item.secondaryName;
+            popupDefEs.textContent = item.defEs;
+            
+            translationBlock.classList.add('hidden');
+            btnTranslate.classList.remove('bg-amber-100', 'text-amber-800');
+            btnTranslate.classList.add('bg-emerald-100', 'text-emerald-800');
+            btnTranslate.innerHTML = '<i class="fa-solid fa-book-open"></i> Example';
+            
+            positionPopup(item.targetX, item.targetY);
+        }
+
+        function positionPopup(targetPctX, targetPctY) {
+            infoPopup.classList.remove('hidden');
+            
+            const containerWidth = svgContainer.clientWidth;
+            const containerHeight = svgContainer.clientHeight;
+            
+            const objX = (targetPctX / 100) * containerWidth;
+            const objY = (targetPctY / 100) * containerHeight;
+            
+            const popupWidth = 280;
+            const popupHeight = 190;
+            
+            let leftPosition = 0;
+            let topPosition = 0;
+            const arrowElement = document.getElementById('popup-arrow');
+            const offset = 22;
+            
+            if (targetPctX > 50) {
+                leftPosition = objX - popupWidth - offset;
+                arrowElement.className = "absolute w-4 h-4 bg-white border-b-4 border-r-4 border-indigo-400 transform rotate-[-45deg] top-1/2 -translate-y-1/2 -right-[10px]";
+            } else {
+                leftPosition = objX + offset;
+                arrowElement.className = "absolute w-4 h-4 bg-white border-t-4 border-l-4 border-indigo-400 transform rotate-[-45deg] top-1/2 -translate-y-1/2 -left-[10px]";
+            }
+            
+            topPosition = objY - (popupHeight / 2) + 20;
+            
+            if (topPosition < 10) topPosition = 10;
+            if (topPosition + popupHeight > containerHeight - 10) topPosition = containerHeight - popupHeight - 10;
+            if (leftPosition < 10) leftPosition = 10;
+            if (leftPosition + popupWidth > containerWidth - 10) leftPosition = containerWidth - popupWidth - 10;
+            
+            infoPopup.style.left = `${leftPosition}px`;
+            infoPopup.style.top = `${topPosition}px`;
+        }
+
+        function highlightSVGElement(selectedId) {
+            Object.keys(vocabularyData).forEach(id => {
+                const element = document.getElementById(`obj-${id}`);
+                if (!element) return;
+                
+                if (id === selectedId) {
+                    element.classList.add('glow-active');
+                    element.style.opacity = "1";
+                    element.style.transform = "scale(1.04)";
+                } else {
+                    element.classList.remove('glow-active');
+                    element.style.opacity = "0.75";
+                    element.style.transform = "scale(1.0)";
+                }
+            });
+        }
+
+        function updateProgress() {
+            const total = Object.keys(vocabularyData).length;
+            const current = discoveredObjects.size;
+            
+            const percentage = (current / total) * 100;
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${current} / ${total} Objects`;
+            
+            if (current === total) {
+                setTimeout(() => {
+                    showCelebration();
+                }, 800);
+            }
+        }
+
+        // --- 8. CONFETTI PHYSICS CELEBRATION MOTOR ---
+        let confettiInterval = null;
+        function showCelebration() {
+            congratsModal.classList.remove('hidden');
+            speakWord("Marvelous! You found all 15 hidden items! You are a superstar!");
+            runConfettiLoop();
+        }
+
+        function runConfettiLoop() {
+            const ctx = confettiCanvas.getContext('2d');
+            let particles = [];
+            const colors = ['#FFC0CB', '#FFD700', '#ADFF2F', '#00FFFF', '#FF69B4', '#8A2BE2'];
+            
+            function resizeCanvas() {
+                confettiCanvas.width = congratsModal.clientWidth;
+                confettiCanvas.height = congratsModal.clientHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+                    r: Math.random() * 6 + 4,
+                    d: Math.random() * confettiCanvas.height,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleIncremental: Math.random() * 0.07 + 0.02,
+                    tiltAngle: 0
+                });
+            }
+            
+            function drawConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                particles.forEach((p, index) => {
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+                    p.x += Math.sin(p.tiltAngle);
+                    p.tilt = Math.sin(p.tiltAngle - index) * 15;
+                    
+                    if (p.y > confettiCanvas.height) {
+                        particles[index] = {
+                            x: Math.random() * confettiCanvas.width,
+                            y: -20,
+                            r: p.r,
+                            d: p.d,
+                            color: p.color,
+                            tilt: p.tilt,
+                            tiltAngleIncremental: p.tiltAngleIncremental,
+                            tiltAngle: p.tiltAngle
+                        };
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                    ctx.stroke();
+                });
+            }
+            
+            if (confettiInterval) clearInterval(confettiInterval);
+            confettiInterval = setInterval(drawConfetti, 18);
+        }
+
+        // --- 9. EVENT BINDINGS ---
+        Object.keys(vocabularyData).forEach(id => {
+            const el = document.getElementById(`obj-${id}`);
+            if (el) {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectObject(id);
+                });
+            }
+        });
+
+        closePopupBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            infoPopup.classList.add('hidden');
+            clearClassroomHighlights();
+            currentSelectedId = null;
+        });
+
+        btnListen.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentSelectedId) {
+                const item = vocabularyData[currentSelectedId];
+                speakWord(item.name, item.def);
+            }
+        });
+
+        btnTranslate.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (translationBlock.classList.contains('hidden')) {
+                translationBlock.classList.remove('hidden');
+                btnTranslate.classList.remove('bg-emerald-100', 'text-emerald-800');
+                btnTranslate.classList.add('bg-amber-100', 'text-amber-800');
+                btnTranslate.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Hide Example';
+            } else {
+                translationBlock.classList.add('hidden');
+                btnTranslate.classList.remove('bg-amber-100', 'text-amber-800');
+                btnTranslate.classList.add('bg-emerald-100', 'text-emerald-800');
+                btnTranslate.innerHTML = '<i class="fa-solid fa-book-open"></i> Example';
+            }
+        });
+
+        toggleHintsBtn.addEventListener('click', () => {
+            const hotspotsLayer = document.getElementById('hotspots-layer');
+            showHints = !showHints;
+            
+            if (showHints) {
+                hotspotsLayer.classList.remove('hidden');
+                hintsIcon.className = "fa-solid fa-star";
+                hintsText.textContent = "Hide Stars";
+                toggleHintsBtn.classList.remove('bg-rose-500', 'text-white');
+                toggleHintsBtn.classList.add('bg-amber-400', 'text-indigo-950');
+            } else {
+                hotspotsLayer.classList.add('hidden');
+                hintsIcon.className = "fa-regular fa-star";
+                hintsText.textContent = "Show Stars";
+                toggleHintsBtn.classList.remove('bg-amber-400', 'text-indigo-950');
+                toggleHintsBtn.classList.add('bg-rose-500', 'text-white');
+            }
+        });
+
+        // --- 10. SYSTEM RESET AND INITIALIZATION ---
+        function resetActivity() {
+            discoveredObjects.clear();
+            infoPopup.classList.add('hidden');
+            congratsModal.classList.add('hidden');
+            currentSelectedId = null;
+            if (confettiInterval) clearInterval(confettiInterval);
+            
+            if (initialHint) {
+                initialHint.classList.remove('hidden');
+            }
+            
+            tabStudy.click();
+            
+            quizActive = false;
+            quizActiveScreen.classList.add('hidden');
+            quizResultScreen.classList.add('hidden');
+            quizStartScreen.classList.remove('hidden');
+            
+            clearClassroomHighlights();
+            updateProgress();
+            renderChecklist();
+        }
+
+        btnReset.addEventListener('click', resetActivity);
+        btnCongratsReset.addEventListener('click', resetActivity);
+        btnCongratsClose.addEventListener('click', () => {
+            congratsModal.classList.add('hidden');
+            if (confettiInterval) clearInterval(confettiInterval);
+        });
+
+        window.addEventListener('resize', () => {
+            if (currentSelectedId && !infoPopup.classList.contains('hidden') && currentMode === 'study') {
+                const item = vocabularyData[currentSelectedId];
+                positionPopup(item.targetX, item.targetY);
+            }
+        });
+
+        // --- 11. ONLOAD TRIGGER ---
+        window.onload = function() {
+            renderChecklist();
+            updateProgress();
+            setTimeout(() => {
+                if (typeof speechSynthesis !== 'undefined') {
+                    speakWord("Hi! Welcome to your Magic Classroom! Touch an object or play a game!");
+                }
+            }, 500);
+        };
+    </script>
+</body>
+</html>
